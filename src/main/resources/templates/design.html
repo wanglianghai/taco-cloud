@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!-- 含义： xmlns="http://www.w3.org/1999/xhtml"
+单独写<html>标签没有声明文档的命名空间，而加上
+xmlns="http://www.w3.org/1999/xhtml"的话，声明了文档的命名空间。声明了命名空间，
+浏览器在解析你的HTML文档的标签时，就会按照这个规范进行。一般使用时，不会感觉得出这二者有多大的区别。
+特殊情况在于一些标签的解释上，比如xhtml的命名规范，要求标签都必须严格闭合，单标签的要在末尾加上"/"，
+如果你使用了xhtml的命名规范，而在标签的书写上不按照规范来的话，有可能发生无法解析该标签的情况。
+所以，好的书写习惯是建议都加上结束标签。-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Taco Cloud</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+</head>
+
+<body>
+<h1>Design your taco!</h1>
+<img th:src="@{/images/TacoCloud.png}"/>
+
+<form method="POST" th:object="${design}">
+
+    <!-- 含义：${#fields.hasErrors('ingredients')}
+    Using the fields property’s hasErrors() method, it checks to see if there are any errors
+    有错误展示 th:errors -->
+    <span class="validationError"
+          th:if="${#fields.hasErrors('ingredients')}"
+          th:errors="*{ingredients}">Ingredient Error</span>
+
+    <!-- 选择框 -->
+    <div class="grid">
+        <div class="ingredient-group" id="wraps">
+            <h3>Designate your wrap:</h3>
+            <div th:each="ingredient : ${wrap}">
+                <input name="ingredients" type="checkbox" th:value="${ingredient.id}"/>
+                <span th:text="${ingredient.name}">INGREDIENT</span><br/>
+            </div>
+        </div>
+
+        <div class="ingredient-group" id="proteins">
+            <h3>Pick your protein:</h3>
+            <div th:each="ingredient : ${protein}">
+                <input name="ingredients" type="checkbox" th:value="${ingredient.id}"/>
+                <span th:text="${ingredient.name}">INGREDIENT</span><br/>
+            </div>
+        </div>
+
+        <div class="ingredient-group" id="cheeses">
+            <h3>Choose your cheese:</h3>
+            <div th:each="ingredient : ${cheese}">
+                <input name="ingredients" type="checkbox" th:value="${ingredient.id}"/>
+                <span th:text="${ingredient.name}">INGREDIENT</span><br/>
+            </div>
+        </div>
+
+        <div class="ingredient-group" id="veggies">
+            <h3>Determine your veggies:</h3>
+            <div th:each="ingredient : ${veggies}">
+                <input name="ingredients" type="checkbox" th:value="${ingredient.id}"/>
+                <span th:text="${ingredient.name}">INGREDIENT</span><br/>
+            </div>
+        </div>
+
+        <div class="ingredient-group" id="sauces">
+            <h3>Select your sauce:</h3>
+            <div th:each="ingredient : ${sauce}">
+                <input name="ingredients" type="checkbox" th:value="${ingredient.id}"/>
+                <span th:text="${ingredient.name}">INGREDIENT</span><br/>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <h3>Name your taco creation:</h3>
+        <input type="text" th:field="*{name}"/>
+        <span th:text="${#fields.hasErrors('name')}">XXX</span>
+        <span class="validationError"
+              th:if="${#fields.hasErrors('name')}"
+              th:errors="*{name}">Name Error</span>
+        <br/>
+
+        <button>Submit your taco</button>
+    </div>
+</form>
+</body>
+</html>
